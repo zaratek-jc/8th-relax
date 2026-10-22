@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listening Activity: Time to Relax</title>
+  <style>
+    :root {
+      --oxford-blue: #002147;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #cbd5e1;
+      --success: #16a34a;
+      --error: #dc2626;
+      --word-chip-bg: #e0f2fe;
+      --word-chip-border: #0284c7;
+      --word-chip-text: #0369a1;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Header Banner */
+    .header-banner {
+      background-color: var(--oxford-blue);
+      color: #ffffff;
+      width: 100%;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      margin-bottom: 24px;
+    }
+
+    .header-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      color: #ffffff;
+    }
+
+    .header-subtitle {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #93c5fd;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 900px;
+      width: calc(100% - 32px);
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    .instruction {
+      font-size: 1.05rem;
+      color: #475569;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 20px;
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+    }
+
+    /* Student Info Panel */
+    .info-card {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      align-items: center;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .input-group label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .input-group input, .input-group select {
+      padding: 9px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+      background-color: #ffffff;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      border-color: var(--primary);
+    }
+
+    .timer-display {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: #eff6ff;
+      padding: 10px 12px;
+      border-radius: 6px;
+      text-align: center;
+      border: 1px solid #bfdbfe;
+    }
+
+    /* Audio Player */
+    .audio-player-card {
+      background: #1e293b;
+      color: white;
+      padding: 18px 20px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .audio-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .audio-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .speed-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+    }
+
+    .speed-label {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .speed-btn {
+      background: transparent;
+      color: #cbd5e1;
+      border: 1px solid #475569;
+      padding: 4px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .speed-btn:hover {
+      background: #334155;
+      color: white;
+    }
+
+    .speed-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Word Bank Pool */
+    .word-bank-section {
+      background: #f1f5f9;
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 24px;
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .word-bank-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 50px;
+    }
+
+    .word-chip {
+      background-color: var(--word-chip-bg);
+      color: var(--word-chip-text);
+      border: 1px solid var(--word-chip-border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: grab;
+      user-select: none;
+      transition: transform 0.15s, box-shadow 0.15s, background-color 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .word-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #bae6fd;
+    }
+
+    .word-chip.dragging {
+      opacity: 0.4;
+      cursor: grabbing;
+    }
+
+    .word-chip.selected {
+      outline: 3px solid var(--primary);
+      background-color: #7dd3fc;
+    }
+
+    /* Dialogue Section */
+    .dialogue-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      line-height: 2.2;
+      font-size: 1.05rem;
+    }
+
+    .dialogue-line {
+      margin-bottom: 16px;
+    }
+
+    .speaker {
+      font-weight: 800;
+      color: var(--oxford-blue);
+      margin-right: 6px;
+    }
+
+    /* Drop Zones */
+    .drop-zone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 120px;
+      height: 34px;
+      padding: 2px 10px;
+      border-bottom: 2px dashed var(--primary);
+      background-color: #f8fafc;
+      border-radius: 6px;
+      margin: 0 4px;
+      vertical-align: middle;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .drop-zone.drag-over {
+      background-color: #dbeafe;
+      border-color: var(--primary-hover);
+      transform: scale(1.03);
+    }
+
+    .drop-zone.filled {
+      border: 1px solid var(--word-chip-border);
+      background-color: var(--word-chip-bg);
+      color: var(--word-chip-text);
+      font-weight: 600;
+      border-bottom-width: 2px;
+    }
+
+    .drop-zone.correct {
+      background-color: #dcfce7 !important;
+      border-color: var(--success) !important;
+      color: #15803d !important;
+    }
+
+    .drop-zone.incorrect {
+      background-color: #fee2e2 !important;
+      border-color: var(--error) !important;
+      color: #b91c1c !important;
+      text-decoration: line-through;
+    }
+
+    /* Action Buttons */
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #64748b;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #475569;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #15803d;
+    }
+
+    /* Modal Results */
+    .results-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .results-content {
+      background: white;
+      padding: 32px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    .score-badge {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 16px 0;
+    }
+
+    .motivation-msg {
+      font-size: 1.1rem;
+      color: #334155;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .header-title { font-size: 1.6rem; }
+      .header-subtitle { font-size: 1.05rem; }
+      .container { padding: 16px; }
+      .drop-zone { min-width: 90px; }
+      .word-bank-section { position: relative; top: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header-banner">
+  <h1 class="header-title">COLEGIO SAN IGNACIO</h1>
+  <div class="header-subtitle">8th grade Listening Activity</div>
+</header>
+
+<div class="container">
+  <div class="instruction">
+    🎧 Listen to the recording and drag (or tap) the correct words into the missing gaps.
+  </div>
+
+  <!-- Student Info -->
+  <div class="info-card">
+    <div class="input-group">
+      <label for="student-course">Class</label>
+      <select id="student-course">
+        <option value="">-- Select your class --</option>
+        <option value="8th grade A">8th grade A</option>
+        <option value="8th grade B">8th grade B</option>
+        <option value="8th grade C">8th grade C</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="student-name">Student</label>
+      <select id="student-name" disabled>
+        <option value="">-- Select name --</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="activity-date">Date</label>
+      <input type="date" id="activity-date">
+    </div>
+    <div class="timer-display" id="timer">Time: 00:00</div>
+  </div>
+
+  <!-- Audio Player -->
+  <div class="audio-player-card">
+    <div class="audio-controls">
+      <button class="audio-btn" id="play-btn">▶ Play</button>
+      <button class="audio-btn" id="pause-btn">⏸ Pause</button>
+      <button class="audio-btn" id="repeat-btn">🔄 Replay</button>
+
+      <div class="speed-controls">
+        <span class="speed-label">Speed:</span>
+        <button class="speed-btn active" data-speed="1.0">1.0x</button>
+        <button class="speed-btn" data-speed="0.8">0.8x</button>
+        <button class="speed-btn" data-speed="0.6">0.6x</button>
+      </div>
+
+      <span id="audio-status" style="font-size: 0.88rem; color: #cbd5e1;">Ready to listen</span>
+    </div>
+    <audio id="html-audio" src="time to relax.mp3" preload="auto"></audio>
+  </div>
+
+  <!-- Word Bank -->
+  <div class="word-bank-section">
+    <div class="word-bank-title">
+      <span>Word Bank (Drag or click a word, then click a gap)</span>
+      <span id="word-count-badge" style="color: var(--primary);">18 remaining</span>
+    </div>
+    <div class="word-bank" id="word-bank">
+      <!-- Dynamically generated chips -->
+    </div>
+  </div>
+
+  <!-- Interactive Text -->
+  <div class="dialogue-card">
+    <div class="dialogue-line">
+      Time to Relax.
+    </div>
+    <div class="dialogue-line">
+      After working hard all <span class="drop-zone" data-answer="term"></span>, we all need to give <span class="drop-zone" data-answer="ourselves"></span> some time to <span class="drop-zone" data-answer="unwind"></span>. Here are a few simple ways to relax and <span class="drop-zone" data-answer="recharge"></span> your mind.
+    </div>
+    <div class="dialogue-line">
+      Create a <span class="drop-zone" data-answer="cozy"></span> spot.
+    </div>
+    <div class="dialogue-line">
+      Set up a quiet space in your room or find <span class="drop-zone" data-answer="somewhere"></span> peaceful outdoors. Does <span class="drop-zone" data-answer="anybody"></span> know a quiet park or garden <span class="drop-zone" data-answer="nearby"></span>? You can grab a <span class="drop-zone" data-answer="cushion"></span>, listen to music, or read a book by <span class="drop-zone" data-answer="yourself"></span>.
+    </div>
+    <div class="dialogue-line">
+      Express yourself.
+    </div>
+    <div class="dialogue-line">
+      Many people use their free time to express <span class="drop-zone" data-answer="themselves"></span> through art or music. You could paint a picture, write a story, or try <span class="drop-zone" data-answer="anything"></span> creative that makes you happy. You don't need <span class="drop-zone" data-answer="anyone"></span> else to join in—just enjoy making <span class="drop-zone" data-answer="something"></span> special for yourself!
+    </div>
+    <div class="dialogue-line">
+      Try a creative hobby.
+    </div>
+    <div class="dialogue-line">
+      Many people give themselves time to explore a new <span class="drop-zone" data-answer="craft"></span> during the holidays. You could try drawing, photography, or anything else that <span class="drop-zone" data-answer="captures"></span> your imagination.
+    </div>
+    <div class="dialogue-line">
+      Ask yourself: is there something new you have <span class="drop-zone" data-answer="always"></span> wanted to create? You do not need <span class="drop-zone" data-answer="anybody"></span> to teach you—you can easily guide yourself using video <span class="drop-zone" data-answer="tutorials"></span> online.
+    </div>
+    <div class="dialogue-line">
+      Find somewhere bright and <span class="drop-zone" data-answer="inspiring"></span> to set up your tools and enjoy the process!
+    </div>
+  </div>
+
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <button class="btn btn-primary" id="check-btn">✔ Check Answers</button>
+    <button class="btn btn-secondary" id="reset-btn">🔄 Try Again</button>
+    <button class="btn btn-success" id="download-btn">📥 Download Report</button>
+  </div>
+</div>
+
+<!-- Modal Results -->
+<div class="results-modal" id="results-modal">
+  <div class="results-content">
+    <h2>Activity Completed!</h2>
+    <div class="score-badge" id="score-display">[0/18]</div>
+    <p class="motivation-msg" id="motivation-display"></p>
+    <button class="btn btn-primary" style="margin: 0 auto;" onclick="closeModal()">Close & Review</button>
+  </div>
+</div>
+
+<script>
+  // Student Database
+  const studentsData = {
+    "8th grade A": [
+      "Barra Sanz Pía Del Pilar",
+      "Carrizo Montecinos Tamara Isabel",
+      "Chávez Hernández Joaquín Ignacio",
+      "Cheung Abarzúa Chienyi Francisco",
+      "Coloma Zúñiga Amara Eluney",
+      "Díaz Castro Catalina Matilda",
+      "Díaz Cortés Benjamín Alonso",
+      "Espinosa Cornejo Amanda Catalina",
+      "Espinoza García Cristóbal Guillermo",
+      "González Narváez Emilia Fernanda",
+      "González Valdebenito Tomás Felipe",
+      "Guzmán Zamora Josefina Paz",
+      "Henríquez Pozo Baltasar",
+      "Hernández Callejas Salvador",
+      "Jara Villanueva Florencia Sofía",
+      "Jorquera Guzmán Camila Ignacia",
+      "Linares Sirit Mathias Alejandro",
+      "Lobos Arredondo Santiago Alonso",
+      "Mahncke Monsalve Benjamín Alonso",
+      "Mardones Villalón Martín Ignacio",
+      "Moreno Tejias Santiago José",
+      "Ovalle Navarrete Amanda Carolina",
+      "Pereira Mora Josefa Melina",
+      "Pino Carrasco Paula Elisa",
+      "Reyes Bichara Santiago Said",
+      "Rochd Garrido Karim Abdu",
+      "Rojas Reyes Jonas Ignacio",
+      "Rojas Soto Amanda Ignacia",
+      "Santander Poblete Pascale Monserrat",
+      "Sepúlveda Rebolledo Pía Catalina",
+      "Squella Troncoso Ignacio Enrique",
+      "Tobar González Tomás Pablo",
+      "Torres Cena Javier Ignacio",
+      "Ulloa Bravo Nicolás Alonso",
+      "Vaccarella Henríquez Diego Antonio",
+      "Vergara Fuenzalida Martina Belén",
+      "Zamora Moreno Gaspar Emilio"
+    ],
+    "8th grade B": [
+      "Acuña Cifras Magdalena Paz",
+      "Arteaga Córdova Maximiliano Andrés",
+      "Brunet Cuellar Esteban Daniel",
+      "Castro Cepeda Maximiliano",
+      "Contreras Pozo Francisca Emilia",
+      "Cordero Quiroz Isabella Ignacia",
+      "Cukic Luengo Belén Antonia",
+      "Del Campo Díaz Martín",
+      "Díaz Navarrete Santiago Ignacio",
+      "Dotte Ramírez Bruno Alonso",
+      "Filippi Cvjetkovic Amparo",
+      "Flores Martínez Dominga Paz",
+      "Fuentes Vásquez Martina Ignacia",
+      "Gutiérrez Urtulla Cristóbal Patricio",
+      "Ibarra Barraza Ema Francisca",
+      "Madariaga Cheix Agustín Matías",
+      "Mella González Paz Isidora",
+      "Molina Bardelli Isidora Agustina",
+      "Morales Ibarra Adolfo Cristóbal",
+      "Neculqueo Mura José Manuel",
+      "Olivares Fincheira Isidora Fernanda",
+      "Olivares Vidal Cristóbal Elías",
+      "Orellana Hernández Borja Ignacio",
+      "Osorio Cortez Benjamín Alejandro",
+      "Osorno Arriagada Emma Magdalena",
+      "Ovalle Navarrete Antonia Carolina",
+      "Peredo Jansana Matías",
+      "Pérez González Matías Ignacio",
+      "Pérez Villalobos Camila Isidora",
+      "Roa Ramírez José Tomás",
+      "Ruiz Urzúa Emilia",
+      "Salinas Bustamante Isidora Agustina",
+      "Sánchez Ortiz Tomás Eduardo",
+      "Silva Ortega Gabriel Enrique",
+      "Trullén Robledo Pablo Renato",
+      "Vargas Abarca Renato Gustavo",
+      "Vines Zúñiga Francisco Antonio",
+      "Guzman Gonzalez Agustin Nicolás"
+    ],
+    "8th grade C": [
+      "Ahumada Villagra Agustín Pascual",
+      "Arce Ramírez Isidora Alejandra",
+      "Arellano Jorquera Amanda Jesús",
+      "Badilla Díaz Valentina Anaís",
+      "Baeza Ara Baltasar Ignacio",
+      "Barrientos Casas-Cordero Rafael Emilio",
+      "Basaure Mora Emilio Santiago",
+      "Blondel Palza Cristóbal José",
+      "Bruna Rodríguez Laura Victoria",
+      "Cabezas Cárdenas Jose-Ignacio",
+      "Díaz Bravo Antonio Eduardo",
+      "Fernández Bustos Ignacia Francisca",
+      "Goncalves Freire Ana Maria",
+      "Granadino Inostroza Matías Felipe",
+      "Gutiérrez Ferrando Marco Agustín",
+      "Ite Hernández Bruno León",
+      "Izaga Franco Martín Ignacio",
+      "León Rosales Nicolás Alonso",
+      "Madariaga Olave Amanda Victoria",
+      "Mazuela Troncoso Alfredo Antonio",
+      "Muñoz Olivos Franco André",
+      "Muñoz Tobar Gabriel Ignacio",
+      "Navarro Espinoza Pascal Rebeca",
+      "Olivares Guajardo Agustina Antonella",
+      "Osorio Bernal Diego Vicente",
+      "Padilla Romero Trinidad Isabel",
+      "Palma González Benjamín Diego",
+      "Pérez Paredes Benjamín Alfonso",
+      "Romero Gatica Gabriel Alejandro",
+      "Ruiz Llano Javiera Ignacia",
+      "Salazar Belmar Consthanza Elizabeth",
+      "Sepúlveda de los Ríos Cybele Carolina",
+      "Torres Ramírez Domingo",
+      "Valenzuela Albornoz Matilde Ignacia",
+      "Valiente Núñez Julián Agustín",
+      "Videla Andia Mateo Francisco",
+      "Zapata Arancibia Antonia Emilia"
+    ]
+  };
+
+  // Target answers: taken directly from the gaps in the text
+  const targetWords = [...document.querySelectorAll(".drop-zone")].map(z => z.dataset.answer);
+
+  let selectedChip = null;
+  let timerInterval = null;
+  let secondsElapsed = 0;
+  let isTimerRunning = false;
+
+  // DOM Elements
+  const wordBank = document.getElementById("word-bank");
+  const dropZones = document.querySelectorAll(".drop-zone");
+  const playBtn = document.getElementById("play-btn");
+  const pauseBtn = document.getElementById("pause-btn");
+  const repeatBtn = document.getElementById("repeat-btn");
+  const htmlAudio = document.getElementById("html-audio");
+  const audioStatus = document.getElementById("audio-status");
+  const timerDisplay = document.getElementById("timer");
+  const dateInput = document.getElementById("activity-date");
+  const courseSelect = document.getElementById("student-course");
+  const nameSelect = document.getElementById("student-name");
+  const speedBtns = document.querySelectorAll(".speed-btn");
+  const wordCountBadge = document.getElementById("word-count-badge");
+
+  // Set Today's Date
+  dateInput.valueAsDate = new Date();
+
+  // Populate Student Dropdown dynamically
+  courseSelect.addEventListener("change", () => {
+    const selectedCourse = courseSelect.value;
+    nameSelect.innerHTML = "";
+
+    if (selectedCourse && studentsData[selectedCourse]) {
+      nameSelect.disabled = false;
+      const defaultOpt = document.createElement("option");
+      defaultOpt.value = "";
+      defaultOpt.textContent = "-- Selecciona Estudiante --";
+      nameSelect.appendChild(defaultOpt);
+
+      studentsData[selectedCourse].forEach(student => {
+        const opt = document.createElement("option");
+        opt.value = student;
+        opt.textContent = student;
+        nameSelect.appendChild(opt);
+      });
+    } else {
+      nameSelect.disabled = true;
+      const defaultOpt = document.createElement("option");
+      defaultOpt.value = "";
+      defaultOpt.textContent = "-- Primero selecciona curso --";
+      nameSelect.appendChild(defaultOpt);
+    }
+  });
+
+  // Shuffle Utility
+  function shuffle(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // Timer Controls
+  function startTimer() {
+    if (!isTimerRunning) {
+      isTimerRunning = true;
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+        const secs = String(secondsElapsed % 60).padStart(2, '0');
+        timerDisplay.textContent = `Time: ${mins}:${secs}`;
+      }, 1000);
+    }
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+    isTimerRunning = false;
+  }
+
+  function resetTimer() {
+    stopTimer();
+    secondsElapsed = 0;
+    timerDisplay.textContent = "Time: 00:00";
+  }
+
+  // Initialize Word Chips
+  function initializeWordBank() {
+    wordBank.innerHTML = "";
+    const shuffled = shuffle(targetWords);
+
+    shuffled.forEach((word, index) => {
+      const chip = document.createElement("div");
+      chip.className = "word-chip";
+      chip.textContent = word;
+      chip.draggable = true;
+      chip.id = `chip-${index}`;
+
+      // Drag Events
+      chip.addEventListener("dragstart", (e) => {
+        startTimer();
+        chip.classList.add("dragging");
+        e.dataTransfer.setData("text/plain", chip.id);
+      });
+
+      chip.addEventListener("dragend", () => {
+        chip.classList.remove("dragging");
+      });
+
+      // Tap / Click Selection fallback
+      chip.addEventListener("click", () => {
+        startTimer();
+        if (selectedChip === chip) {
+          chip.classList.remove("selected");
+          selectedChip = null;
+        } else {
+          if (selectedChip) selectedChip.classList.remove("selected");
+          selectedChip = chip;
+          chip.classList.add("selected");
+        }
+      });
+
+      wordBank.appendChild(chip);
+    });
+
+    updateWordCount();
+  }
+
+  function updateWordCount() {
+    const remaining = wordBank.querySelectorAll(".word-chip").length;
+    wordCountBadge.textContent = `${remaining} remaining`;
+  }
+
+  // Setup Drop Zones
+  dropZones.forEach(zone => {
+    zone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      zone.classList.add("drag-over");
+    });
+
+    zone.addEventListener("dragleave", () => {
+      zone.classList.remove("drag-over");
+    });
+
+    zone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      zone.classList.remove("drag-over");
+      const chipId = e.dataTransfer.getData("text/plain");
+      const chip = document.getElementById(chipId);
+      if (chip) placeChipInZone(chip, zone);
+    });
+
+    // Click to place
+    zone.addEventListener("click", () => {
+      startTimer();
+      if (zone.classList.contains("filled")) {
+        returnChipToBank(zone);
+      } else if (selectedChip) {
+        placeChipInZone(selectedChip, zone);
+        selectedChip.classList.remove("selected");
+        selectedChip = null;
+      }
+    });
+  });
+
+  function placeChipInZone(chip, zone) {
+    if (zone.classList.contains("filled")) {
+      returnChipToBank(zone);
+    }
+    zone.textContent = chip.textContent;
+    zone.dataset.chipId = chip.id;
+    zone.classList.add("filled");
+    chip.remove();
+    updateWordCount();
+  }
+
+  function returnChipToBank(zone) {
+    if (!zone.classList.contains("filled")) return;
+
+    const word = zone.textContent;
+    const chipId = zone.dataset.chipId;
+
+    const chip = document.createElement("div");
+    chip.className = "word-chip";
+    chip.textContent = word;
+    chip.draggable = true;
+    chip.id = chipId || `chip-${Date.now()}`;
+
+    chip.addEventListener("dragstart", (e) => {
+      chip.classList.add("dragging");
+      e.dataTransfer.setData("text/plain", chip.id);
+    });
+
+    chip.addEventListener("dragend", () => {
+      chip.classList.remove("dragging");
+    });
+
+    chip.addEventListener("click", () => {
+      if (selectedChip === chip) {
+        chip.classList.remove("selected");
+        selectedChip = null;
+      } else {
+        if (selectedChip) selectedChip.classList.remove("selected");
+        selectedChip = chip;
+        chip.classList.add("selected");
+      }
+    });
+
+    wordBank.appendChild(chip);
+
+    zone.textContent = "";
+    zone.removeAttribute("data-chip-id");
+    zone.classList.remove("filled", "correct", "incorrect");
+    updateWordCount();
+  }
+
+  // Audio Playback Controls
+  playBtn.addEventListener("click", () => {
+    startTimer();
+    htmlAudio.play().then(() => {
+      audioStatus.textContent = "Playing audio...";
+    }).catch(() => {
+      audioStatus.textContent = `Error al reproducir '${htmlAudio.getAttribute("src")}'`;
+    });
+  });
+
+  pauseBtn.addEventListener("click", () => {
+    htmlAudio.pause();
+    audioStatus.textContent = "Paused";
+  });
+
+  repeatBtn.addEventListener("click", () => {
+    startTimer();
+    htmlAudio.currentTime = 0;
+    htmlAudio.play().then(() => {
+      audioStatus.textContent = "Replaying audio...";
+    }).catch(() => {
+      audioStatus.textContent = `Error al reproducir '${htmlAudio.getAttribute("src")}'`;
+    });
+  });
+
+  speedBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const speed = parseFloat(btn.dataset.speed);
+      htmlAudio.playbackRate = speed;
+      speedBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
+
+  // Check Answers
+  document.getElementById("check-btn").addEventListener("click", () => {
+    stopTimer();
+    let score = 0;
+
+    dropZones.forEach(zone => {
+      const userValue = zone.textContent.trim().toLowerCase();
+      const correctAnswer = zone.dataset.answer.trim().toLowerCase();
+
+      if (userValue === correctAnswer) {
+        score++;
+        zone.classList.add("correct");
+        zone.classList.remove("incorrect");
+      } else {
+        zone.classList.add("incorrect");
+        zone.classList.remove("correct");
+      }
+    });
+
+    showResults(score);
+  });
+
+  function showResults(score) {
+    const total = targetWords.length;
+    const scoreDisplay = document.getElementById("score-display");
+    const motivationDisplay = document.getElementById("motivation-display");
+
+    scoreDisplay.textContent = `[${score}/${total}]`;
+
+    if (score === total) {
+      motivationDisplay.textContent = "🎉 Exceptional work! Perfect score! Your listening skills are outstanding!";
+    } else if (score >= Math.ceil(total * 0.8)) {
+      motivationDisplay.textContent = "🌟 Great job! You listened very carefully and got almost all of them correct!";
+    } else if (score >= Math.ceil(total * 0.5)) {
+      motivationDisplay.textContent = "👍 Good attempt! Listen to the audio again to spot the missing details.";
+    } else {
+      motivationDisplay.textContent = "💪 Keep practicing! Replay the audio and try again to improve your score.";
+    }
+
+    document.getElementById("results-modal").style.display = "flex";
+  }
+
+  function closeModal() {
+    document.getElementById("results-modal").style.display = "none";
+  }
+
+  // Reset Activity
+  document.getElementById("reset-btn").addEventListener("click", () => {
+    resetTimer();
+    dropZones.forEach(zone => {
+      zone.textContent = "";
+      zone.removeAttribute("data-chip-id");
+      zone.classList.remove("filled", "correct", "incorrect");
+    });
+    initializeWordBank();
+  });
+
+  // Download Student Report with Strict Validation
+  document.getElementById("download-btn").addEventListener("click", () => {
+    const studentCourse = courseSelect.value;
+    const studentName = nameSelect.value;
+
+    // Strict validation requirement
+    if (!studentCourse || !studentName) {
+      alert("⚠️ Debes seleccionar tu Curso y Nombre de estudiante de la lista antes de poder descargar el informe.");
+      return;
+    }
+
+    const date = dateInput.value || "N/A";
+    const timeSpent = timerDisplay.textContent.replace("Time: ", "");
+
+    let correctCount = 0;
+    let details = "";
+
+    dropZones.forEach((zone, idx) => {
+      const userVal = zone.textContent.trim();
+      const expected = zone.dataset.answer.trim();
+      const isCorrect = userVal.toLowerCase() === expected.toLowerCase();
+      if (isCorrect) correctCount++;
+
+      details += `Gap #${idx + 1}: Student Answer = "${userVal || 'EMPTY'}" | Expected = "${expected}" [${isCorrect ? 'CORRECT' : 'INCORRECT'}]\n`;
+    });
+
+    const reportContent = `================================================
+COLEGIO SAN IGNACIO
+LISTENING COMPREHENSION REPORT: TIME TO RELAX
+================================================
+Estudiante    : ${studentName}
+Curso / Grade : ${studentCourse}
+Fecha         : ${date}
+Tiempo Usado  : ${timeSpent}
+Puntaje       : ${correctCount} / ${dropZones.length} (${Math.round((correctCount/dropZones.length)*100)}%)
+================================================
+
+GAP BREAKDOWN:
+------------------------------------------------
+${details}
+================================================
+`;
+
+    const blob = new Blob([reportContent], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `Reporte_Listening_${studentName.replace(/\s+/g, '_')}_${studentCourse.replace(/\s+/g, '_')}.txt`;
+    link.click();
+  });
+
+  // Start initialization
+  initializeWordBank();
+</script>
+
+</body>
+</html>
